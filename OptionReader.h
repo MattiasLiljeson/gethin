@@ -1,7 +1,10 @@
 #pragma once
 
+#include <algorithm>
 #include <vector>
 #include <sstream>
+#include <string>
+#include <iostream>
 
 using std::string;
 using std::vector;
@@ -30,10 +33,14 @@ private:
 
 class Flag : public Parameter{
 public:
+	bool value() const{ return m_supplied; }
+	Flag& value(bool supplied){ m_supplied = supplied; return *this; }
+
 	void set( const string& arg ) override{
 		if( !arg.empty() ){
 			throw std::invalid_argument( "Boolean argument. Takes no value." );
 		}
+		value(true);
 	}
 
 	string usage() const override{
@@ -43,6 +50,8 @@ public:
 		formattedHelp( os );
 		return os.str();
 	}
+private:
+	bool m_supplied;
 };
 
 class String : public Parameter{
