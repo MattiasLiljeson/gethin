@@ -1,5 +1,3 @@
-
-CC=g++
 INCLUDE_DIRS=include Catch2/single_include/
 INC_PARAMS=$(foreach d, $(INCLUDE_DIRS), -I$d)
 CFLAGS=-c -Wall -std=c++11 $(INC_PARAMS)
@@ -14,10 +12,10 @@ EXECUTABLE=runtests
 all: $(SOURCES) $(EXECUTABLE)
     
 $(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
 
 .cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
+	$(CXX) $(CFLAGS) $< -o $@
 
 .PHONY: test
 test: all
