@@ -13,6 +13,7 @@ namespace gethin {
 
 class Set : public Parameter_CRTP<Set> {
  public:
+  Set() : m_mandatory(false), m_name(""),m_value("") {}
   bool mandatory() const { return m_mandatory; }
   Set &mandatory(bool mandatory) {
     m_mandatory = mandatory;
@@ -45,6 +46,9 @@ class Set : public Parameter_CRTP<Set> {
   }
 
   void set(const string &arg) override {
+    if (m_alternatives.empty()) {
+      throw std::invalid_argument("Faulty option, no alternatives set!");
+    }
     if (arg.empty() && m_mandatory) {
       throw std::invalid_argument(
           "Mandatory argument. Value must be supplied.");

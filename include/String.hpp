@@ -10,6 +10,7 @@ namespace gethin {
 
 class String : public Parameter_CRTP<String> {
  public:
+  String() : m_mandatory(false), m_name(""), m_value("") {}
   bool mandatory() const { return m_mandatory; }
   String &mandatory(bool mandatory) {
     m_mandatory = mandatory;

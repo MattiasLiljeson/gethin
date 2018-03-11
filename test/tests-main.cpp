@@ -125,3 +125,34 @@ TEST_CASE("Test gethin getopt lib") {
     REQUIRE(f.value() == "quux");
   }
 }
+
+TEST_CASE("Test skipping some arguments doesn't fail") {
+  // This will work as "" will match "-f", i.e, there's and empty string in
+  // "-f". This should be fixed with optional or with some optional-like hack,
+  // ie using a pair<T, bool>. It could also be fixed by having a single
+  // constructor instead of a fluent API... ;)
+  SECTION("Missing superclass (Parameter) members") {
+    String s = String();
+    OptionReader optReader(vector<Parameter*>{&s});
+    char* fake[2];
+    fake[0] = (char*)"-f";
+    fake[1] = (char*)"baz";
+    optReader.read(2, fake);
+    REQUIRE(s.value() == "baz");
+  }
+
+  SECTION("Missing superclass (Parameter) members") {
+    Set set = Set().shortOpt('a').alternatives(vector<string>());
+    OptionReader optReader(vector<Parameter*>{&set});
+    char* fake[2];
+    fake[0] = (char*)"-a";
+    fake[1] = (char*)"baz";
+    bool failed = false;
+    try {
+      optReader.read(2, fake);
+    } catch (const std::invalid_argument& e) {
+      failed = true;
+    }
+    REQUIRE(failed == true);
+  }
+}
