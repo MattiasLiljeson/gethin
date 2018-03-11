@@ -9,6 +9,7 @@
 using std::string;
 using std::vector;
 
+namespace gethin {
 class Parameter{
 public:
 	Parameter() :m_shortOpt( ' ' ), m_longOpt( "" ), m_help( "" ){}
@@ -248,3 +249,4 @@ private:
 		}
 	}
 };
+}

@@ -2,6 +2,12 @@
 #include "OptionReader.h"
 #include "catch.hpp"
 
+using gethin::OptionReader;
+using gethin::Parameter;
+using gethin::String;
+using gethin::Flag;
+using gethin::Set;
+
 TEST_CASE("Test gethin getopt lib"){
 
 	String f; f.mandatory( false ).name("argument name, shown in help")
