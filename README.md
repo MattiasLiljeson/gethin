@@ -19,16 +19,16 @@ Example:
 ```c++
 #include "gethin.hpp"
 
-String f = String()
+String foo = String()
                 .shortOpt('f')
                 .longOpt("foo")
                 .mandatory(false)
                 .name("argument name, shown in help")
                 .help("some help text about foo");
 
-Flag b = Flag().shortOpt('b').longOpt("bar").help("some help text about bar");
+Flag bar = Flag().shortOpt('b').longOpt("bar").help("some help text about bar");
 
-Set pga = Set()
+Set algorithm = Set()
             .shortOpt('a')
             .longOpt("palette-generation-algorithm")
             .mandatory(false)
@@ -38,7 +38,7 @@ Set pga = Set()
                 "where 'mixed' combines the results of 'histogram' and "
                 "'iterative'");
 
-OptionReader optReader({&f, &b, &pga});
+OptionReader optReader({&foo, &bar, &algorithm});
 ```
 
 Tests
