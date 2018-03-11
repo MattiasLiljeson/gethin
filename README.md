@@ -1,6 +1,6 @@
 gethin
 ======
-A small (300 sloc) cross-platform header-only c++11 getopt library.
+A small (300 sloc) cross-platform header-only c++11 getopt library
 
 [![Build Status](https://travis-ci.org/MattiasLiljeson/gethin.svg?branch=master)](https://travis-ci.org/MattiasLiljeson/gethin)
 [![codecov](https://codecov.io/gh/MattiasLiljeson/gethin/branch/master/graph/badge.svg)](https://codecov.io/gh/MattiasLiljeson/gethin)
@@ -32,8 +32,7 @@ Set pga = Set()
             .shortOpt('a')
             .longOpt("palette-generation-algorithm")
             .mandatory(false)
-            .alternatives(
-                vector<string>{"kmeans", "iterative", "histogram", "mixed"})
+            .alternatives({"kmeans", "iterative", "histogram", "mixed"})
             .help(
                 "Specify 'kmeans', 'iterative', 'histogram' or 'mixed' "
                 "where 'mixed' combines the results of 'histogram' and "

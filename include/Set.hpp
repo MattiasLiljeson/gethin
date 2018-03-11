@@ -8,6 +8,7 @@
 
 using std::string;
 using std::vector;
+using std::initializer_list;
 
 namespace gethin {
 
@@ -25,8 +26,8 @@ class Set : public Parameter_CRTP<Set> {
     return *this;
   }
   const vector<string> &alternatives() const { return m_alternatives; }
-  Set &alternatives(const vector<string> &alternatives) {
-    m_alternatives = alternatives;
+  Set &alternatives(initializer_list<string> alternatives) {
+    m_alternatives = vector<string>(alternatives);
     return *this;
   }
   const string &value() const { return m_value; }

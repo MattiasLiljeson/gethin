@@ -22,8 +22,7 @@ TEST_CASE("Test gethin getopt lib") {
                 .shortOpt('a')
                 .longOpt("palette-generation-algorithm")
                 .mandatory(false)
-                .alternatives(
-                    vector<string>{"kmeans", "iterative", "histogram", "mixed"})
+                .alternatives({"kmeans", "iterative", "histogram", "mixed"})
                 .help(
                     "Specify 'kmeans', 'iterative', 'histogram' or 'mixed' "
                     "where 'mixed' combines the results of 'histogram' and "
@@ -142,7 +141,7 @@ TEST_CASE("Test skipping some arguments doesn't fail") {
   }
 
   SECTION("Missing superclass (Parameter) members") {
-    Set set = Set().shortOpt('a').alternatives(vector<string>());
+    Set set = Set().shortOpt('a');
     OptionReader optReader(vector<Parameter*>{&set});
     char* fake[2];
     fake[0] = (char*)"-a";
