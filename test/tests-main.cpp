@@ -9,24 +9,25 @@ using gethin::Set;
 using gethin::String;
 
 TEST_CASE("Test gethin getopt lib") {
-  String f;
-  f.mandatory(false)
-      .name("argument name, shown in help")
-      .shortOpt('f')
-      .longOpt("foo")
-      .help("some help text about foo");
+  String f = String()
+                 .shortOpt('f')
+                 .longOpt("foo")
+                 .mandatory(false)
+                 .name("argument name, shown in help")
+                 .help("some help text about foo");
 
-  Flag b;
-  b.shortOpt('b').longOpt("bar").help("some help text about bar");
+  Flag b = Flag().shortOpt('b').longOpt("bar").help("some help text about bar");
 
-  Set pga;
-  pga.mandatory(false)
-      .alternatives(vector<string>{"kmeans", "iterative", "histogram", "mixed"})
-      .shortOpt('a')
-      .longOpt("palette-generation-algorithm")
-      .help(
-          "Specify 'kmeans', 'iterative', 'histogram' or 'mixed' where 'mixed' "
-          "combines the results of 'histogram' and 'iterative'");
+  Set pga = Set()
+                .shortOpt('a')
+                .longOpt("palette-generation-algorithm")
+                .mandatory(false)
+                .alternatives(
+                    vector<string>{"kmeans", "iterative", "histogram", "mixed"})
+                .help(
+                    "Specify 'kmeans', 'iterative', 'histogram' or 'mixed' "
+                    "where 'mixed' combines the results of 'histogram' and "
+                    "'iterative'");
 
   OptionReader optReader(vector<Parameter*>{&f, &b, &pga});
 

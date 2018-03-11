@@ -8,17 +8,31 @@ using std::string;
 namespace gethin {
 class Parameter {
  public:
-  Parameter() : m_shortOpt(' '), m_longOpt(""), m_help("") {}
+  virtual ~Parameter(){};
+  virtual const string &longOpt() const = 0;
+  virtual char shortOpt() const = 0;
+  virtual void set(const string &arg) = 0;
+  virtual string usage() const = 0;
+};
+
+template <typename T>
+class Parameter_CRTP : public Parameter {
+ public:
+  Parameter_CRTP() : m_shortOpt(' '), m_longOpt(""), m_help("") {}
+  virtual ~Parameter_CRTP(){};
+
   char shortOpt() const { return m_shortOpt; }
-  Parameter &shortOpt(char shortOpt) {
+  T &shortOpt(char shortOpt) {
     m_shortOpt = shortOpt;
-    return *this;
+    return static_cast<T &>(*this);
   }
+
   const string &longOpt() const { return m_longOpt; }
-  Parameter &longOpt(const string &longOpt) {
+  T &longOpt(const string &longOpt) {
     m_longOpt = longOpt;
-    return *this;
+    return static_cast<T &>(*this);
   }
+
   const string &help() const { return m_help; }
   void formattedHelp(std::ostringstream &os) const {
     for (size_t i = 0; i < m_help.size(); i += 72) {
@@ -26,14 +40,15 @@ class Parameter {
          << m_help.substr(i, i + 72 > m_help.size() ? m_help.size() - i : 72);
     }
   }
-  Parameter &help(const string &help) {
+  T &help(const string &help) {
     m_help = help;
-    return *this;
+    return static_cast<T &>(*this);
   }
+
   virtual void set(const string &arg) = 0;
   virtual string usage() const = 0;
 
- private:
+ protected:
   char m_shortOpt;
   string m_longOpt;
   string m_help;

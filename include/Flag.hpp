@@ -7,7 +7,7 @@ using std::string;
 
 namespace gethin {
 
-class Flag : public Parameter {
+class Flag : public Parameter_CRTP<Flag> {
  public:
   bool value() const { return m_supplied; }
   Flag &value(bool supplied) {

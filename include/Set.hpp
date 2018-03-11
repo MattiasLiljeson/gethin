@@ -11,7 +11,7 @@ using std::vector;
 
 namespace gethin {
 
-class Set : public Parameter {
+class Set : public Parameter_CRTP<Set> {
  public:
   bool mandatory() const { return m_mandatory; }
   Set &mandatory(bool mandatory) {

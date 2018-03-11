@@ -8,7 +8,7 @@ using std::string;
 
 namespace gethin {
 
-class String : public Parameter {
+class String : public Parameter_CRTP<String> {
  public:
   bool mandatory() const { return m_mandatory; }
   String &mandatory(bool mandatory) {
