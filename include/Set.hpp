@@ -13,7 +13,7 @@ namespace gethin {
 
 class Set : public Parameter_CRTP<Set> {
  public:
-  Set() : m_mandatory(false), m_name(""),m_value("") {}
+  Set() : m_mandatory(false), m_name(""), m_value("") {}
   bool mandatory() const { return m_mandatory; }
   Set &mandatory(bool mandatory) {
     m_mandatory = mandatory;
@@ -56,7 +56,7 @@ class Set : public Parameter_CRTP<Set> {
     if (find(m_alternatives.begin(), m_alternatives.end(), arg) ==
         m_alternatives.end()) {
       string message = "Argument must be one of: {'" + m_alternatives[0] + "'";
-      for (int i = 1; i < m_alternatives.size(); i++) {
+      for (size_t i = 1; i < m_alternatives.size(); i++) {
         message += ", '" + m_alternatives[i] + "'";
       }
       message += "}. The supplied argument was '" + arg + "'.";

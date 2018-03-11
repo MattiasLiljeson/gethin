@@ -28,7 +28,7 @@ clean:
 	find . -name "*.gcno" -print0 | xargs -0 rm -f
 	find . -name "*.o" -print0 | xargs -0 rm -f
 
-HEADER_FILES=$(shell find include/ -type f -name '*.h')
+HEADER_FILES=$(shell find include/ -type f -name '*.hpp')
 
 .PHONY: format
 format:

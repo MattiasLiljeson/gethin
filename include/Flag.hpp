@@ -9,7 +9,7 @@ namespace gethin {
 
 class Flag : public Parameter_CRTP<Flag> {
  public:
- Flag() : m_supplied(false){}
+  Flag() : m_supplied(false) {}
   bool value() const { return m_supplied; }
   Flag &value(bool supplied) {
     m_supplied = supplied;
