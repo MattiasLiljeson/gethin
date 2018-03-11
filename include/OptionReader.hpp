@@ -9,15 +9,18 @@
 
 using std::cout;
 using std::endl;
+using std::initializer_list;
+using std::invalid_argument;
 using std::string;
 using std::vector;
-using std::invalid_argument;
 
 namespace gethin {
 class OptionReader {
  public:
   OptionReader() {}
-  OptionReader(vector<Parameter *> opts) : m_opts(opts) {}
+  OptionReader(initializer_list<Parameter *> opts) {
+    m_opts = vector<Parameter *>(opts);
+  }
   OptionReader &with(Parameter *p) {
     m_opts.push_back(p);
     return *this;
@@ -73,9 +76,9 @@ class OptionReader {
   }
 
   void printUsage() {
-     cout << "Usage: <program> [OPTION]" <<  endl;
+    cout << "Usage: <program> [OPTION]" << endl;
     for (Parameter *p : m_opts) {
-       cout << p->usage() <<  endl;
+      cout << p->usage() << endl;
     }
   }
 
@@ -93,15 +96,15 @@ class OptionReader {
         string data = "";
         size_t nextOptIdx = findNextOptIdx(args, i);
         if (nextOptIdx - i > 2) {
-          throw  invalid_argument("Two arguments given instead of one.");
+          throw invalid_argument("Two arguments given instead of one.");
         } else if (nextOptIdx - i == 2) {
           data = args[i + 1];
         }
         handleOpt(val, data);
       }
-    } catch (const  invalid_argument &e) {
-      throw  invalid_argument("Failed to parse option: '" + val +
-                                  "': " + e.what());
+    } catch (const invalid_argument &e) {
+      throw invalid_argument("Failed to parse option: '" + val + "': " +
+                             e.what());
     }
   }
   static bool isOption(string val) { return val[0] == '/' || val[0] == '-'; }
@@ -126,7 +129,7 @@ class OptionReader {
       }
     }
     if (!found) {
-      throw  invalid_argument("Unknown option: '" + enteredOpt + "'");
+      throw invalid_argument("Unknown option: '" + enteredOpt + "'");
     }
   }
 };

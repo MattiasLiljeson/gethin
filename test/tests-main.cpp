@@ -28,7 +28,7 @@ TEST_CASE("Test gethin getopt lib") {
                     "where 'mixed' combines the results of 'histogram' and "
                     "'iterative'");
 
-  OptionReader optReader(vector<Parameter*>{&f, &b, &pga});
+  OptionReader optReader({&f, &b, &pga});
 
   SECTION("String shortopt") {
     char* fake[2];
@@ -132,7 +132,7 @@ TEST_CASE("Test skipping some arguments doesn't fail") {
   // constructor instead of a fluent API... ;)
   SECTION("Missing superclass (Parameter) members") {
     String s = String();
-    OptionReader optReader(vector<Parameter*>{&s});
+    OptionReader optReader({&s});
     char* fake[2];
     fake[0] = (char*)"-f";
     fake[1] = (char*)"baz";
@@ -142,7 +142,7 @@ TEST_CASE("Test skipping some arguments doesn't fail") {
 
   SECTION("Missing superclass (Parameter) members") {
     Set set = Set().shortOpt('a');
-    OptionReader optReader(vector<Parameter*>{&set});
+    OptionReader optReader({&set});
     char* fake[2];
     fake[0] = (char*)"-a";
     fake[1] = (char*)"baz";

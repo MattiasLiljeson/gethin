@@ -38,7 +38,7 @@ Set pga = Set()
                 "where 'mixed' combines the results of 'histogram' and "
                 "'iterative'");
 
-OptionReader optReader(vector<Parameter*>{&f, &b, &pga});
+OptionReader optReader({&f, &b, &pga});
 ```
 
 Tests
