@@ -3,6 +3,7 @@ gethin
 A cross-platform header-only c++11 getopt library
 
 [![Build Status](https://travis-ci.org/MattiasLiljeson/gethin.svg?branch=master)](https://travis-ci.org/MattiasLiljeson/gethin)
+[![codecov](https://codecov.io/gh/MattiasLiljeson/gethin/branch/master/graph/badge.svg)](https://codecov.io/gh/MattiasLiljeson/gethin)
 
 Usage
 -----
