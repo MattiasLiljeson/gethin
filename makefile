@@ -1,9 +1,14 @@
 
 CC=g++
-CFLAGS=-c -Wall -std=c++11
+INCLUDE_DIRS=include Catch2/single_include/
+INC_PARAMS=$(foreach d, $(INCLUDE_DIRS), -I$d)
+CFLAGS=-c -Wall -std=c++11 $(INC_PARAMS)
 LDFLAGS=
-SOURCES=tests-main.cpp
+SRC_DIR=test
+SRC=tests-main.cpp
+SOURCES=$(foreach s, $(SRC), $(SRC_DIR)/$s)
 OBJECTS=$(SOURCES:.cpp=.o)
+OBJ_DIR=obj
 EXECUTABLE=runtests
 
 all: $(SOURCES) $(EXECUTABLE)
@@ -20,4 +25,4 @@ test: all
 
 .PHONY: clean
 clean:
-	-rm -f *.o $(EXECUTABLE)
+	-rm -f $(SRC_DIR)/*.o $(EXECUTABLE)

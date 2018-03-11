@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "OptionReader.h"
-#include "Catch2/single_include/catch.hpp"
+#include "catch.hpp"
 
 TEST_CASE("Test gethin getopt lib"){
 
