@@ -3,15 +3,15 @@ INC_PARAMS=$(foreach d, $(INCLUDE_DIRS), -I$d)
 CFLAGS=-c -Wall -std=c++11 $(INC_PARAMS) -fprofile-arcs -ftest-coverage
 LDFLAGS=-lgcov --coverage
 
-TEST_SOURCE_FILES=test/tests-main.cpp test/optionalTest.cpp
-TEST_OBJECTS=$(TEST_SOURCE_FILES:.cpp=.o)
+TEST_SRC:=$(shell find test -name '*.cpp')
+TEST_OBJECTS=$(TEST_SRC:.cpp=.o)
 TEST_EXECUTABLE=runtests
 
-EXAMPLE_SOURCE_FILES=example/drawshape.cpp
-EXAMPLE_OBJECTS=$(EXAMPLE_SOURCE_FILES:.cpp=.o)
+EXAMPLE_SRC=example/drawshape.cpp
+EXAMPLE_OBJECTS=$(EXAMPLE_SRC:.cpp=.o)
 EXAMPLE_EXECUTABLE=drawshape
 
-all: $(TEST_SOURCE_FILES) $(TEST_EXECUTABLE) $(EXAMPLE_SOURCE_FILES) $(EXAMPLE_EXECUTABLE)
+all: $(TEST_SRC) $(TEST_EXECUTABLE) $(EXAMPLE_SRC) $(EXAMPLE_EXECUTABLE)
 
 $(TEST_EXECUTABLE): $(TEST_OBJECTS) 
 	$(CXX) $(LDFLAGS) $(TEST_OBJECTS) -o $@
@@ -38,6 +38,6 @@ HEADER_FILES=$(shell find include/ -type f -name '*.hpp')
 
 .PHONY: format
 format:
-	$(foreach file,$(TEST_SOURCE_FILES),clang-format -i -style=file $(file);)
-	$(foreach file,$(EXAMPLE_SOURCE_FILES),clang-format -i -style=file $(file);)
+	$(foreach file,$(TEST_SRC),clang-format -i -style=file $(file);)
+	$(foreach file,$(EXAMPLE_SRC),clang-format -i -style=file $(file);)
 	$(foreach file,$(HEADER_FILES),clang-format -i -style=file $(file);)
