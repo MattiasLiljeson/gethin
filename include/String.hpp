@@ -33,9 +33,9 @@ class String : public Parameter_CRTP<String> {
   }
 
   void set(const std::string &arg) override {
-    if (arg.empty() && m_mandatory) {
+    if (arg.empty()) {
       throw std::invalid_argument(
-          "Mandatory argument. Value must be supplied.");
+          "A value must be supplied to this option.");
     }
     value(arg);
   }

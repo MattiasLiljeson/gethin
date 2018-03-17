@@ -93,8 +93,8 @@ class OptionReader {
         handleOpt(val, data);
       }
     } catch (const std::invalid_argument &e) {
-      throw std::invalid_argument("Failed to parse option: '" + val +
-                                  "': " + e.what());
+      throw std::invalid_argument("Failed to parse option '" + val +
+                                  "'. " + e.what());
     }
   }
   static bool isOption(std::string val) {

@@ -29,13 +29,32 @@ TEST_CASE("Test String option type") {
     REQUIRE(f.value() == "quux");
   }
 
-  // The value will in this case be an empty string. An improvement could be
-  // to throw instead as this is clearly erranous input.
   SECTION("String without argument") {
+      std::cout<<"\n\nSTART\n\n";
     char* fake[1];
     fake[0] = (char*)"--foo";
-    optReader.read(1, fake);
-    REQUIRE(f.value() == "");
+    bool failed = false;
+    try {
+      optReader.read(1, fake);
+    } catch (const std::invalid_argument& e) {
+      failed = true;
+    }
+    REQUIRE(failed == true);
+    std::cout<<"\n\nEND\n\n";
+  }
+
+SECTION("String with two arguments") {
+    char* fake[3];
+    fake[0] = (char*)"--foo";
+    fake[1] = (char*)"one";
+    fake[2] = (char*)"two";
+    bool failed = false;
+    try {
+      optReader.read(3, fake);
+    } catch (const std::invalid_argument& e) {
+      failed = true;
+    }
+    REQUIRE(failed == true);
   }
 
   SECTION("Test String usage, help text") {
