@@ -76,10 +76,7 @@ class OptionReader {
   }
 
   static bool isUsageOpt(std::string str) {
-    if (str == "-h" || str == "--help" || str == "-u" || str == "--usage") {
-      return true;
-    }
-    return false;
+    return str == "-h" || str == "--help" || str == "-u" || str == "--usage";
   }
 
   void parseInput(std::vector<std::string> args, size_t i) {

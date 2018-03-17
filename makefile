@@ -1,4 +1,4 @@
-INCLUDE_DIRS=include Catch2/single_include/
+INCLUDE_DIRS=include test/include Catch2/single_include/
 INC_PARAMS=$(foreach d, $(INCLUDE_DIRS), -I$d)
 CFLAGS=-c -Wall -std=c++11 $(INC_PARAMS) -fprofile-arcs -ftest-coverage
 LDFLAGS=-lgcov --coverage

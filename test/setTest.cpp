@@ -1,20 +1,18 @@
+#include <regex>
+#include <string>
+#include "ReHelper.hpp"
 #include "catch.hpp"
 #include "gethin.hpp"
 
-using gethin::OptionReader;
-using gethin::Set;
-
 TEST_CASE("Test Set option type") {
-  Set set = Set()
-                .shortOpt('a')
-                .longOpt("palette-generation-algorithm")
-                .mandatory(false)
-                .alternatives({"kmeans", "iterative", "histogram", "mixed"})
-                .help(
-                    "Specify 'kmeans', 'iterative', 'histogram' or 'mixed' "
-                    "where 'mixed' combines the results of 'histogram' and "
-                    "'iterative'");
-  OptionReader optReader({&set});
+  gethin::Set set =
+      gethin::Set()
+          .shortOpt('a')
+          .longOpt("palette-generation-algorithm")
+          .mandatory(false)
+          .alternatives({"kmeans", "iterative", "histogram", "mixed"})
+          .help("Specify 'kmeans', 'iterative', 'histogram' or 'mixed' ");
+  gethin::OptionReader optReader({&set});
 
   SECTION("Set shortopt") {
     char* fake[2];
@@ -42,11 +40,25 @@ TEST_CASE("Test Set option type") {
     }
     REQUIRE(failed == true);
   }
+
+  SECTION("Test Set usage, help text") {
+    std::string usage = set.usage();
+    std::smatch result;
+    std::regex re(ReHelper::shortOptRe() + ReHelper::longOptRe() +
+                  ReHelper::alternativesRe() + ReHelper::helpRe());
+    std::regex_search(usage, result, re);
+    REQUIRE(result.size() == 5);
+    REQUIRE(result[1] == "a");
+    REQUIRE(result[2] == "palette-generation-algorithm");
+    REQUIRE(result[3] == "kmeans, iterative, histogram, mixed");
+    REQUIRE(result[4] ==
+            "Specify 'kmeans', 'iterative', 'histogram' or 'mixed' ");
+  }
 }
 
 TEST_CASE("Skip specifying alternatives for a Set") {
-  Set set = Set().shortOpt('c').longOpt("ccc");
-  OptionReader optReader({&set});
+  gethin::Set set = gethin::Set().shortOpt('c').longOpt("ccc");
+  gethin::OptionReader optReader({&set});
   char* fake[2];
   fake[0] = (char*)"-a";
   fake[1] = (char*)"baz";

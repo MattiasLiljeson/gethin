@@ -1,18 +1,18 @@
+#include <regex>
+#include <string>
+#include "ReHelper.hpp"
 #include "catch.hpp"
 #include "gethin.hpp"
 
-using gethin::OptionReader;
-using gethin::String;
-
 TEST_CASE("Test String option type") {
-  String f = String()
-                 .shortOpt('f')
-                 .longOpt("foo")
-                 .mandatory(false)
-                 .name("argument name, shown in help")
-                 .help("some help text about foo");
+  gethin::String f = gethin::String()
+                         .shortOpt('f')
+                         .longOpt("foo")
+                         .mandatory(false)
+                         .name("argument name, shown in help")
+                         .help("some help text about foo");
 
-  OptionReader optReader({&f});
+  gethin::OptionReader optReader({&f});
 
   SECTION("String shortopt") {
     char* fake[2];
@@ -36,5 +36,18 @@ TEST_CASE("Test String option type") {
     fake[0] = (char*)"--foo";
     optReader.read(1, fake);
     REQUIRE(f.value() == "");
+  }
+
+  SECTION("Test String usage, help text") {
+    std::string usage = f.usage();
+    std::smatch result;
+    std::regex re(ReHelper::shortOptRe() + ReHelper::longOptRe() +
+                  ReHelper::nameRe() + ReHelper::helpRe());
+    std::regex_search(usage, result, re);
+    REQUIRE(result.size() == 5);
+    REQUIRE(result[1] == "f");
+    REQUIRE(result[2] == "foo");
+    REQUIRE(result[3] == "argument name, shown in help");
+    REQUIRE(result[4] == "some help text about foo");
   }
 }

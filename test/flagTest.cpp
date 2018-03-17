@@ -1,12 +1,13 @@
+#include <regex>
+#include <string>
+#include "ReHelper.hpp"
 #include "catch.hpp"
 #include "gethin.hpp"
 
-using gethin::Flag;
-using gethin::OptionReader;
-
 TEST_CASE("Test Flag option type") {
-  Flag b = Flag().shortOpt('b').longOpt("bar").help("some help text about bar");
-  OptionReader optReader({&b});
+  gethin::Flag b = gethin::Flag().shortOpt('b').longOpt("bar").help(
+      "some help text about bar");
+  gethin::OptionReader optReader({&b});
 
   SECTION("Flag shortopt") {
     char* fake[1];
@@ -20,5 +21,17 @@ TEST_CASE("Test Flag option type") {
     fake[0] = (char*)"--bar";
     optReader.read(1, fake);
     REQUIRE(b.value() == true);
+  }
+
+  SECTION("Test Flag usage, help text") {
+    std::string usage = b.usage();
+    std::smatch result;
+    std::regex re(ReHelper::shortOptRe() + ReHelper::longOptRe() +
+                  ReHelper::helpRe());
+    std::regex_search(usage, result, re);
+    REQUIRE(result.size() == 4);
+    REQUIRE(result[1] == "b");
+    REQUIRE(result[2] == "bar");
+    REQUIRE(result[3] == "some help text about bar");
   }
 }
