@@ -65,7 +65,6 @@ void drawEllipse(int width, int height) {
     for (int x = -width; x <= width; x++) {
       if (x * x * h2 + y * y * w2 <= h2 * w2) {
         std::cout << "#";
-        // setpixel(origin.x + x, origin.y + y);
       } else {
         std::cout << " ";
       }
