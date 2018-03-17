@@ -3,8 +3,6 @@
 #include <string>
 #include "Parameter.hpp"
 
-using std::string;
-
 namespace gethin {
 
 class Flag : public Parameter_CRTP<Flag> {
@@ -16,14 +14,14 @@ class Flag : public Parameter_CRTP<Flag> {
     return *this;
   }
 
-  void set(const string &arg) override {
+  void set(const std::string &arg) override {
     if (!arg.empty()) {
       throw std::invalid_argument("Boolean argument. Takes no value.");
     }
     value(true);
   }
 
-  string usage() const override {
+  std::string usage() const override {
     std::ostringstream os;
     os << "-" << shortOpt() << " --" << longOpt();
     // os<<"}\n"<<"\t"<<formattedHelp(os);

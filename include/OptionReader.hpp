@@ -7,47 +7,40 @@
 
 #include "Parameter.hpp"
 
-using std::cout;
-using std::endl;
-using std::initializer_list;
-using std::invalid_argument;
-using std::string;
-using std::vector;
-
 namespace gethin {
 class OptionReader {
  public:
   OptionReader() {}
-  OptionReader(initializer_list<Parameter *> opts) {
-    m_opts = vector<Parameter *>(opts);
+  OptionReader(std::initializer_list<Parameter *> opts) {
+    m_opts = std::vector<Parameter *>(opts);
   }
   OptionReader &with(Parameter *p) {
     m_opts.push_back(p);
     return *this;
   }
-  OptionReader &with(vector<Parameter *> ps) {
+  OptionReader &with(std::vector<Parameter *> ps) {
     m_opts.insert(end(m_opts), begin(ps), end(ps));
     return *this;
   }
 
   void read(int argc, char *argv[]) {
-    vector<string> args(argv, argv + argc);
+    std::vector<std::string> args(argv, argv + argc);
     preProcessInput(args);
     processInput(args);
   }
 
  private:
-  vector<Parameter *> m_opts;
+  std::vector<Parameter *> m_opts;
 
-  static void preProcessInput(vector<string> &args) {
+  static void preProcessInput(std::vector<std::string> &args) {
     for (size_t i = 0; i < args.size(); ++i) {
-      string val = args[i];
+      std::string val = args[i];
 
       size_t p = val.find('=');
-      if (p != string::npos) {
+      if (p != std::string::npos) {
         args[i] = val.substr(0, p);
         size_t secondLength = val.size() - p - 1;
-        string second = val.substr(p + 1, secondLength);
+        std::string second = val.substr(p + 1, secondLength);
         second.erase(remove(second.begin(), second.end(), '"'), second.end());
         args.insert(args.begin() + ++i, second);
       }
@@ -55,17 +48,17 @@ class OptionReader {
       else if (val[0] == '-' && val[1] != '-' && val.length() > 2) {
         args.erase(args.begin() + i--);
         for (size_t j = 1; j < val.size(); j++) {
-          string extracted = "-";
-          extracted += string(1, val[j]);
+          std::string extracted = "-";
+          extracted += std::string(1, val[j]);
           args.insert(args.begin() + ++i, extracted);
         }
       }
     }
   }
 
-  void processInput(vector<string> args) {
+  void processInput(std::vector<std::string> args) {
     for (size_t i = 0; i < args.size(); i++) {
-      string str = args[i];
+      std::string str = args[i];
       if (isUsageOpt(str)) {
         printUsage();
         return;
@@ -76,42 +69,45 @@ class OptionReader {
   }
 
   void printUsage() {
-    cout << "Usage: <program> [OPTION]" << endl;
+    std::cout << "Usage: <program> [OPTION]" << std::endl;
     for (Parameter *p : m_opts) {
-      cout << p->usage() << endl;
+      std::cout << p->usage() << std::endl;
     }
   }
 
-  static bool isUsageOpt(string str) {
+  static bool isUsageOpt(std::string str) {
     if (str == "-h" || str == "--help" || str == "-u" || str == "--usage") {
       return true;
     }
     return false;
   }
 
-  void parseInput(vector<string> args, size_t i) {
-    string val(args[i]);
+  void parseInput(std::vector<std::string> args, size_t i) {
+    std::string val(args[i]);
     try {
       if (isOption(val)) {
-        string data = "";
+        std::string data = "";
         size_t nextOptIdx = findNextOptIdx(args, i);
         if (nextOptIdx - i > 2) {
-          throw invalid_argument("Two arguments given instead of one.");
+          throw std::invalid_argument("Two arguments given instead of one.");
         } else if (nextOptIdx - i == 2) {
           data = args[i + 1];
         }
         handleOpt(val, data);
       }
-    } catch (const invalid_argument &e) {
-      throw invalid_argument("Failed to parse option: '" + val + "': " +
-                             e.what());
+    } catch (const std::invalid_argument &e) {
+      throw std::invalid_argument("Failed to parse option: '" + val +
+                                  "': " + e.what());
     }
   }
-  static bool isOption(string val) { return val[0] == '/' || val[0] == '-'; }
+  static bool isOption(std::string val) {
+    return val[0] == '/' || val[0] == '-';
+  }
 
-  static size_t findNextOptIdx(vector<string> args, size_t currentIdx) {
+  static size_t findNextOptIdx(std::vector<std::string> args,
+                               size_t currentIdx) {
     for (size_t i = currentIdx + 1; i < args.size(); i++) {
-      string candidate(args[i]);
+      std::string candidate(args[i]);
       if (isOption(candidate)) {
         return i;
       }
@@ -119,17 +115,17 @@ class OptionReader {
     return args.size();
   }
 
-  void handleOpt(const string &enteredOpt, const string &arg) {
+  void handleOpt(const std::string &enteredOpt, const std::string &arg) {
     bool found = false;
     for (Parameter *opt : m_opts) {
-      if (enteredOpt.substr(2, string::npos) == opt->longOpt() ||
+      if (enteredOpt.substr(2, std::string::npos) == opt->longOpt() ||
           (enteredOpt.length() == 2 && enteredOpt[1] == opt->shortOpt())) {
         opt->set(arg);
         found = true;
       }
     }
     if (!found) {
-      throw invalid_argument("Unknown option: '" + enteredOpt + "'");
+      throw std::invalid_argument("Unknown option: '" + enteredOpt + "'");
     }
   }
 };

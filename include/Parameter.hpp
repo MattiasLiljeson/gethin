@@ -3,16 +3,14 @@
 #include <sstream>
 #include <string>
 
-using std::string;
-
 namespace gethin {
 class Parameter {
  public:
   virtual ~Parameter(){};
-  virtual const string &longOpt() const = 0;
+  virtual const std::string &longOpt() const = 0;
   virtual char shortOpt() const = 0;
-  virtual void set(const string &arg) = 0;
-  virtual string usage() const = 0;
+  virtual void set(const std::string &arg) = 0;
+  virtual std::string usage() const = 0;
 };
 
 template <typename T>
@@ -27,30 +25,30 @@ class Parameter_CRTP : public Parameter {
     return static_cast<T &>(*this);
   }
 
-  const string &longOpt() const { return m_longOpt; }
-  T &longOpt(const string &longOpt) {
+  const std::string &longOpt() const { return m_longOpt; }
+  T &longOpt(const std::string &longOpt) {
     m_longOpt = longOpt;
     return static_cast<T &>(*this);
   }
 
-  const string &help() const { return m_help; }
+  const std::string &help() const { return m_help; }
   void formattedHelp(std::ostringstream &os) const {
     for (size_t i = 0; i < m_help.size(); i += 72) {
       os << "\n\t"
          << m_help.substr(i, i + 72 > m_help.size() ? m_help.size() - i : 72);
     }
   }
-  T &help(const string &help) {
+  T &help(const std::string &help) {
     m_help = help;
     return static_cast<T &>(*this);
   }
 
-  virtual void set(const string &arg) = 0;
-  virtual string usage() const = 0;
+  virtual void set(const std::string &arg) = 0;
+  virtual std::string usage() const = 0;
 
  protected:
   char m_shortOpt;
-  string m_longOpt;
-  string m_help;
+  std::string m_longOpt;
+  std::string m_help;
 };
 }  // namespace gethin

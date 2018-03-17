@@ -6,10 +6,6 @@
 #include <string>
 #include <vector>
 
-using std::string;
-using std::vector;
-using std::initializer_list;
-
 namespace gethin {
 
 class Set : public Parameter_CRTP<Set> {
@@ -20,25 +16,25 @@ class Set : public Parameter_CRTP<Set> {
     m_mandatory = mandatory;
     return *this;
   }
-  const string &name() const { return m_name; }
-  Set &name(const string &name) {
+  const std::string &name() const { return m_name; }
+  Set &name(const std::string &name) {
     m_name = name;
     return *this;
   }
-  const vector<string> &alternatives() const { return m_alternatives; }
-  Set &alternatives(initializer_list<string> alternatives) {
-    m_alternatives = vector<string>(alternatives);
+  const std::vector<std::string> &alternatives() const { return m_alternatives; }
+  Set &alternatives(std::initializer_list<std::string> alternatives) {
+    m_alternatives = std::vector<std::string>(alternatives);
     return *this;
   }
-  const string &value() const { return m_value; }
-  Set &value(const string &value) {
+  const std::string &value() const { return m_value; }
+  Set &value(const std::string &value) {
     m_value = value;
     return *this;
   }
-  string usage() const override {
+  std::string usage() const override {
     std::ostringstream os;
     os << "-" << shortOpt() << " --" << longOpt() << " = {";
-    for (string a : m_alternatives) {
+    for (std::string a : m_alternatives) {
       os << a << ", ";
     }
     os << "}";
@@ -46,7 +42,7 @@ class Set : public Parameter_CRTP<Set> {
     return os.str();
   }
 
-  void set(const string &arg) override {
+  void set(const std::string &arg) override {
     if (m_alternatives.empty()) {
       throw std::invalid_argument("Faulty option, no alternatives set!");
     }
@@ -56,7 +52,7 @@ class Set : public Parameter_CRTP<Set> {
     }
     if (find(m_alternatives.begin(), m_alternatives.end(), arg) ==
         m_alternatives.end()) {
-      string message = "Argument must be one of: {'" + m_alternatives[0] + "'";
+      std::string message = "Argument must be one of: {'" + m_alternatives[0] + "'";
       for (size_t i = 1; i < m_alternatives.size(); i++) {
         message += ", '" + m_alternatives[i] + "'";
       }
@@ -68,8 +64,8 @@ class Set : public Parameter_CRTP<Set> {
 
  private:
   bool m_mandatory;
-  string m_name;
-  vector<string> m_alternatives;
-  string m_value;
+  std::string m_name;
+  std::vector<std::string> m_alternatives;
+  std::string m_value;
 };
 }  // namespace gethin
