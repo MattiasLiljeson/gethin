@@ -10,8 +10,9 @@
 namespace gethin {
 class OptionReader {
  public:
-  OptionReader() {}
-  OptionReader(std::initializer_list<Parameter *> opts) {
+  OptionReader() : m_out(std::cout){}
+  OptionReader(std::initializer_list<Parameter *> opts,
+  std::ostream& out = std::cout) : m_out(out){
     m_opts = std::vector<Parameter *>(opts);
   }
   OptionReader &with(Parameter *p) {
@@ -37,6 +38,7 @@ class OptionReader {
   }
 
  private:
+  std::ostream& m_out;
   std::vector<Parameter *> m_opts;
 
   static void preProcessInput(std::vector<std::string> &args) {
@@ -75,10 +77,10 @@ class OptionReader {
     }
   }
 
-  void printUsage(std::ostream& out = std::cout) {
-    out << "Usage: <program> [OPTION]" << std::endl;
+  void printUsage() {
+    m_out << "Usage: <program> [OPTION]" << std::endl;
     for (Parameter *p : m_opts) {
-      out << p->usage() << std::endl;
+      m_out << p->usage() << std::endl;
     }
   }
 
