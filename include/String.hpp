@@ -8,12 +8,7 @@ namespace gethin {
 
 class String : public Parameter_CRTP<String> {
  public:
-  String() : m_mandatory(false), m_name(""), m_value("") {}
-  bool mandatory() const { return m_mandatory; }
-  String &mandatory(bool mandatory) {
-    m_mandatory = mandatory;
-    return *this;
-  }
+  String(){}
   const std::string &name() const { return m_name; }
   String &name(const std::string &name) {
     m_name = name;
@@ -37,11 +32,11 @@ class String : public Parameter_CRTP<String> {
       throw std::invalid_argument(
           "A value must be supplied to this option.");
     }
+    m_isSet = true;
     value(arg);
   }
 
  private:
-  bool m_mandatory;
   std::string m_name;
   std::string m_value;
 };

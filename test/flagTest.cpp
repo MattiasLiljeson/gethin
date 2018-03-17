@@ -4,10 +4,13 @@
 #include "catch.hpp"
 #include "gethin.hpp"
 
+using gethin::OptionReader;
+using gethin::Flag;
+
 TEST_CASE("Test Flag option type") {
-  gethin::Flag b = gethin::Flag().shortOpt('b').longOpt("bar").help(
+  Flag b = Flag().shortOpt('b').longOpt("bar").help(
       "some help text about bar");
-  gethin::OptionReader optReader({&b});
+  OptionReader optReader({&b});
 
   SECTION("Flag shortopt") {
     char* fake[1];
@@ -34,4 +37,30 @@ TEST_CASE("Test Flag option type") {
     REQUIRE(result[2] == "bar");
     REQUIRE(result[3] == "some help text about bar");
   }
+}
+
+// Mandatory option? yeah, we support that oxymoron!
+TEST_CASE("Mandatory Flag") {
+  Flag f = Flag().longOpt("bar").mandatory();
+  OptionReader optReader({&f});
+  char* fake[1];
+  fake[0] = (char*)"--bar";
+  optReader.read(1, fake);
+  REQUIRE(f.value() == true);
+}
+
+// Mandatory option? yeah, we support that oxymoron!
+TEST_CASE("Missing mandatory Flag") {
+  Flag a = Flag().shortOpt('a');
+  Flag f = Flag().longOpt("bar").mandatory();
+  OptionReader optReader({&a, &f});
+  char* fake[1];
+  fake[0] = (char*)"-a";
+  bool failed = false;
+  try {
+    optReader.read(1, fake);
+  } catch (const std::invalid_argument& e) {
+    failed = true;
+  }
+  REQUIRE(failed == true);
 }

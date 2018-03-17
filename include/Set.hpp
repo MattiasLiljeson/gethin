@@ -10,12 +10,7 @@ namespace gethin {
 
 class Set : public Parameter_CRTP<Set> {
  public:
-  Set() : m_mandatory(false), m_name(""), m_value("") {}
-  bool mandatory() const { return m_mandatory; }
-  Set &mandatory(bool mandatory) {
-    m_mandatory = mandatory;
-    return *this;
-  }
+  Set() {}
   const std::string &name() const { return m_name; }
   Set &name(const std::string &name) {
     m_name = name;
@@ -66,11 +61,11 @@ class Set : public Parameter_CRTP<Set> {
       message += "}. The supplied argument was '" + arg + "'.";
       throw std::invalid_argument(message);
     }
+    m_isSet = true;
     value(arg);
   }
 
  private:
-  bool m_mandatory;
   std::string m_name;
   std::vector<std::string> m_alternatives;
   std::string m_value;

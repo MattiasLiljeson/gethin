@@ -2,16 +2,17 @@
 
 #include <sstream>
 #include <string>
-
 #include "Optional.hpp"
 
 namespace gethin {
 class Parameter {
  public:
   virtual ~Parameter(){};
-  virtual const Optional<std::string> &longOpt() const = 0;
+  virtual bool isMandatory() const = 0;
+  virtual bool isSet() const = 0;
   virtual const Optional<char> shortOpt() const = 0;
-  virtual bool matches(const std::string& enteredOpt) = 0;
+  virtual const Optional<std::string> &longOpt() const = 0;
+  virtual bool matches(const std::string &enteredOpt) const = 0;
   virtual void set(const std::string &arg) = 0;
   virtual std::string usage() const = 0;
 };
@@ -19,8 +20,16 @@ class Parameter {
 template <typename T>
 class Parameter_CRTP : public Parameter {
  public:
-  Parameter_CRTP(){}
+  Parameter_CRTP() : m_mandatory(false), m_isSet(false) {}
   virtual ~Parameter_CRTP(){};
+
+  bool isMandatory() const { return m_mandatory; }
+  T &mandatory() {
+    m_mandatory = true;
+    return static_cast<T &>(*this);
+  }
+
+  bool isSet() const { return m_isSet; }
 
   const Optional<char> shortOpt() const { return m_shortOpt; }
   T &shortOpt(char shortOpt) {
@@ -47,13 +56,18 @@ class Parameter_CRTP : public Parameter {
     return static_cast<T &>(*this);
   }
 
-  bool matches(const std::string& enteredOpt){
-      bool longMatches = m_longOpt.isPresent() &&
-       enteredOpt.substr(2, std::string::npos) == m_longOpt.get();
-      bool shortMatches = m_shortOpt.isPresent() &&
-       enteredOpt.length() == 2 && enteredOpt[1] == m_shortOpt.get();
+  bool matches(const std::string &enteredOpt) const {
+    bool longMatches = m_longOpt.isPresent() && longOptMatches(enteredOpt);
+    bool shortMatches = m_shortOpt.isPresent() && shortOptMatches(enteredOpt);
+    return longMatches || shortMatches;
+  }
 
-       return longMatches || shortMatches;
+  bool longOptMatches(const std::string &enteredOpt) const {
+    return enteredOpt.substr(2, std::string::npos) == m_longOpt.get();
+  }
+
+  bool shortOptMatches(const std::string &enteredOpt) const {
+    return enteredOpt.length() == 2 && enteredOpt[1] == m_shortOpt.get();
   }
 
   virtual void set(const std::string &arg) = 0;
@@ -61,6 +75,8 @@ class Parameter_CRTP : public Parameter {
 
  protected:
   const int OUT_WIDTH = 72;
+  bool m_mandatory;
+  bool m_isSet;
   Optional<char> m_shortOpt;
   Optional<std::string> m_longOpt;
   Optional<std::string> m_help;

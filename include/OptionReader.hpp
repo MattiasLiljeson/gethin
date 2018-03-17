@@ -27,6 +27,13 @@ class OptionReader {
     std::vector<std::string> args(argv, argv + argc);
     preProcessInput(args);
     processInput(args);
+    for (Parameter *opt : m_opts) {
+      if (opt->isMandatory() && !opt->isSet()) {
+        throw std::invalid_argument(
+            "The mandatory option '--" + opt->longOpt().get() + "' ('-" +
+            opt->shortOpt().get() + "') was not supplied!");
+      }
+    }
   }
 
  private:
@@ -93,8 +100,8 @@ class OptionReader {
         handleOpt(val, data);
       }
     } catch (const std::invalid_argument &e) {
-      throw std::invalid_argument("Failed to parse option '" + val +
-                                  "'. " + e.what());
+      throw std::invalid_argument("Failed to parse option '" + val + "'. " +
+                                  e.what());
     }
   }
   static bool isOption(std::string val) {

@@ -19,6 +19,7 @@ class Flag : public Parameter_CRTP<Flag> {
     if (!arg.empty()) {
       throw std::invalid_argument("Boolean argument. Takes no value.");
     }
+    m_isSet = true;
     value(true);
   }
 

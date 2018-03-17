@@ -4,15 +4,17 @@
 #include "catch.hpp"
 #include "gethin.hpp"
 
-TEST_CASE("Test String option type") {
-  gethin::String f = gethin::String()
-                         .shortOpt('f')
-                         .longOpt("foo")
-                         .mandatory(false)
-                         .name("argument name, shown in help")
-                         .help("some help text about foo");
+using gethin::OptionReader;
+using gethin::String;
 
-  gethin::OptionReader optReader({&f});
+TEST_CASE("Test String option type") {
+  String f = String()
+                 .shortOpt('f')
+                 .longOpt("foo")
+                 .name("argument name, shown in help")
+                 .help("some help text about foo");
+
+  OptionReader optReader({&f});
 
   SECTION("String shortopt") {
     char* fake[2];
@@ -30,7 +32,6 @@ TEST_CASE("Test String option type") {
   }
 
   SECTION("String without argument") {
-      std::cout<<"\n\nSTART\n\n";
     char* fake[1];
     fake[0] = (char*)"--foo";
     bool failed = false;
@@ -40,10 +41,9 @@ TEST_CASE("Test String option type") {
       failed = true;
     }
     REQUIRE(failed == true);
-    std::cout<<"\n\nEND\n\n";
   }
 
-SECTION("String with two arguments") {
+  SECTION("String with two arguments") {
     char* fake[3];
     fake[0] = (char*)"--foo";
     fake[1] = (char*)"one";
@@ -69,4 +69,32 @@ SECTION("String with two arguments") {
     REQUIRE(result[3] == "argument name, shown in help");
     REQUIRE(result[4] == "some help text about foo");
   }
+}
+
+// Mandatory option? yeah, we support that oxymoron!
+TEST_CASE("Mandatory String") {
+  String s = String().longOpt("bar").mandatory();
+  OptionReader optReader({&s});
+  char* fake[2];
+  fake[0] = (char*)"--bar";
+  fake[1] = (char*)"baz";
+  optReader.read(2, fake);
+  REQUIRE(s.value() == "baz");
+}
+
+// Mandatory option? yeah, we support that oxymoron!
+TEST_CASE("Missing mandatory String") {
+  String a = String().shortOpt('a');
+  String s = String().longOpt("bar").mandatory();
+  OptionReader optReader({&a, &s});
+  char* fake[2];
+  fake[0] = (char*)"-a";
+  fake[1] = (char*)"baz";
+  bool failed = false;
+  try {
+    optReader.read(2, fake);
+  } catch (const std::invalid_argument& e) {
+    failed = true;
+  }
+  REQUIRE(failed == true);
 }

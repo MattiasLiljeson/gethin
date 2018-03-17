@@ -9,15 +9,9 @@ using gethin::String;
 TEST_CASE("Test combined shortOpts") {
   Flag a = Flag().shortOpt('a').longOpt("asd").help("some help text about asd");
   Flag b = Flag().shortOpt('b').longOpt("bar").help("some help text about bar");
-  Flag c = Flag().shortOpt('c').longOpt("corge").help("some help text about corge");
-  String e = String()
-                 .shortOpt('e')
-                 .longOpt("ert")
-                 .help("some help text about foo");
-  String f = String()
-                 .shortOpt('f')
-                 .longOpt("foo")
-                 .help("some help text about foo");
+  Flag c = Flag().shortOpt('c').longOpt("corge").help("help text about corge");
+  String e = String().shortOpt('e').longOpt("ert").help("help text about foo");
+  String f = String().shortOpt('f').longOpt("foo").help("help text about foo");
 
   OptionReader optReader({&a, &b, &c, &e, &f});
 
@@ -43,7 +37,7 @@ TEST_CASE("Test combined shortOpts") {
     REQUIRE(failed == true);
   }
 
-    SECTION("Combined longopts, argument using opts must be last") {
+  SECTION("Combined longopts, argument using opts must be last") {
     char* fake[2];
     fake[0] = (char*)"--asd";
     fake[1] = (char*)"--bar";
