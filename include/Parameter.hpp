@@ -3,6 +3,8 @@
 #include <sstream>
 #include <string>
 
+#include "Optional.hpp"
+
 namespace gethin {
 class Parameter {
  public:

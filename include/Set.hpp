@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Parameter.hpp"
-
 #include <algorithm>
+#include <stdexcept>
 #include <string>
 #include <vector>
+#include "Parameter.hpp"
 
 namespace gethin {
 

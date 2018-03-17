@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 #include "Parameter.hpp"
 
@@ -23,7 +24,7 @@ class Flag : public Parameter_CRTP<Flag> {
 
   std::string usage() const override {
     std::ostringstream os;
-    os << "-" << shortOpt() << " --" << longOpt();
+    os << "-" << shortOpt().get() << " --" << longOpt().get();
     // os<<"}\n"<<"\t"<<formattedHelp(os);
     formattedHelp(os);
     return os.str();

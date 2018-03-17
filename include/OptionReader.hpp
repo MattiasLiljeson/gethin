@@ -2,9 +2,9 @@
 
 #include <algorithm>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
-
 #include "Parameter.hpp"
 
 namespace gethin {

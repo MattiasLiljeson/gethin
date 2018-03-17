@@ -1,7 +1,7 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
-
 #include "Parameter.hpp"
 
 namespace gethin {
