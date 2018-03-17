@@ -4,12 +4,11 @@
 #include "catch.hpp"
 #include "gethin.hpp"
 
-using gethin::OptionReader;
 using gethin::Flag;
+using gethin::OptionReader;
 
 TEST_CASE("Test Flag option type") {
-  Flag b = Flag().shortOpt('b').longOpt("bar").help(
-      "some help text about bar");
+  Flag b = Flag().shortOpt('b').longOpt("bar").help("some help text about bar");
   OptionReader optReader({&b});
 
   SECTION("Flag shortopt") {
@@ -24,6 +23,19 @@ TEST_CASE("Test Flag option type") {
     fake[0] = (char*)"--bar";
     optReader.read(1, fake);
     REQUIRE(b.value() == true);
+  }
+
+  SECTION("Flag with argument should fail") {
+    char* fake[2];
+    fake[0] = (char*)"--bar";
+    fake[1] = (char*)"baz";
+    bool failed = false;
+    try {
+      optReader.read(2, fake);
+    } catch (const std::invalid_argument& e) {
+      failed = true;
+    }
+    REQUIRE(failed == true);
   }
 
   SECTION("Test Flag usage, help text") {
