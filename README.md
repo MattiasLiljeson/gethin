@@ -10,7 +10,7 @@ Usage
 There are three types of options you can use: `String`, `Flag` and `Set`.
 
 1. Create the options you need.
-2. Create a OptionReader object. Supply the options in a vector.
+2. Create a OptionReader object. Supply the options to the constructor.
 3. Call the read method on the OptionReader object with argc and argv. 
 4. Call the value method on the options to get the parsed arguments.
 
