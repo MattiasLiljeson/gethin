@@ -75,10 +75,10 @@ class OptionReader {
     }
   }
 
-  void printUsage() {
-    std::cout << "Usage: <program> [OPTION]" << std::endl;
+  void printUsage(std::ostream& out = std::cout) {
+    out << "Usage: <program> [OPTION]" << std::endl;
     for (Parameter *p : m_opts) {
-      std::cout << p->usage() << std::endl;
+      out << p->usage() << std::endl;
     }
   }
 
