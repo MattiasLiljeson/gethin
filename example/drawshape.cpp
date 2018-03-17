@@ -38,6 +38,10 @@ int main(int argc, char* argv[]) {
     std::cerr << "Error during execution!" << std::endl;
   }
 
+  if (color.value()) {
+    std::cout << "\x1B[32m";
+  }
+
   if (shape.value() == "rectangle") {
     drawRectangle(std::stoi(width.value()), std::stoi(height.value()));
   } else if (shape.value() == "ellipsis") {

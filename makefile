@@ -7,7 +7,7 @@ TEST_SOURCE_FILES=test/tests-main.cpp
 TEST_OBJECTS=$(TEST_SOURCE_FILES:.cpp=.o)
 TEST_EXECUTABLE=runtests
 
-EXAMPLE_SOURCE_FILES=example/main.cpp
+EXAMPLE_SOURCE_FILES=example/drawshape.cpp
 EXAMPLE_OBJECTS=$(EXAMPLE_SOURCE_FILES:.cpp=.o)
 EXAMPLE_EXECUTABLE=drawshape
 
