@@ -3,7 +3,7 @@ INC_PARAMS=$(foreach d, $(INCLUDE_DIRS), -I$d)
 CFLAGS=-c -Wall -std=c++11 $(INC_PARAMS) -fprofile-arcs -ftest-coverage
 LDFLAGS=-lgcov --coverage
 
-TEST_SOURCE_FILES=test/tests-main.cpp
+TEST_SOURCE_FILES=test/tests-main.cpp test/optionalTest.cpp
 TEST_OBJECTS=$(TEST_SOURCE_FILES:.cpp=.o)
 TEST_EXECUTABLE=runtests
 

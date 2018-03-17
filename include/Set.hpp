@@ -21,7 +21,9 @@ class Set : public Parameter_CRTP<Set> {
     m_name = name;
     return *this;
   }
-  const std::vector<std::string> &alternatives() const { return m_alternatives; }
+  const std::vector<std::string> &alternatives() const {
+    return m_alternatives;
+  }
   Set &alternatives(std::initializer_list<std::string> alternatives) {
     m_alternatives = std::vector<std::string>(alternatives);
     return *this;
@@ -33,7 +35,7 @@ class Set : public Parameter_CRTP<Set> {
   }
   std::string usage() const override {
     std::ostringstream os;
-    os << "-" << shortOpt() << " --" << longOpt() << " = {";
+    os << "-" << shortOpt().get() << " --" << longOpt().get() << " = {";
     for (std::string a : m_alternatives) {
       os << a << ", ";
     }
@@ -52,7 +54,8 @@ class Set : public Parameter_CRTP<Set> {
     }
     if (find(m_alternatives.begin(), m_alternatives.end(), arg) ==
         m_alternatives.end()) {
-      std::string message = "Argument must be one of: {'" + m_alternatives[0] + "'";
+      std::string message =
+          "Argument must be one of: {'" + m_alternatives[0] + "'";
       for (size_t i = 1; i < m_alternatives.size(); i++) {
         message += ", '" + m_alternatives[i] + "'";
       }

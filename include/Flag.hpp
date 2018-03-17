@@ -25,7 +25,6 @@ class Flag : public Parameter_CRTP<Flag> {
   std::string usage() const override {
     std::ostringstream os;
     os << "-" << shortOpt().get() << " --" << longOpt().get();
-    // os<<"}\n"<<"\t"<<formattedHelp(os);
     formattedHelp(os);
     return os.str();
   }

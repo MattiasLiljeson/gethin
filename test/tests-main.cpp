@@ -125,23 +125,44 @@ TEST_CASE("Test gethin getopt lib") {
   }
 }
 
-TEST_CASE("Test skipping some arguments doesn't fail") {
-  // This will work as "" will match "-f", i.e, there's and empty string in
-  // "-f". This should be fixed with optional or with some optional-like hack,
-  // ie using a pair<T, bool>. It could also be fixed by having a single
-  // constructor instead of a fluent API... ;)
-  SECTION("Missing superclass (Parameter) members") {
+TEST_CASE("Test not specifying") {
+  SECTION("Not specifying anything") {
     String s = String();
     OptionReader optReader({&s});
     char* fake[2];
     fake[0] = (char*)"-f";
+    fake[1] = (char*)"foo";
+    bool failed = false;
+    try {
+      optReader.read(2, fake);
+    } catch (const std::invalid_argument& e) {
+      failed = true;
+    }
+    REQUIRE(failed == true);
+  }
+
+  SECTION("Only shortopt set") {
+    String s = String().shortOpt('a');
+    OptionReader optReader({&s});
+    char* fake[2];
+    fake[0] = (char*)"-a";
+    fake[1] = (char*)"asd";
+    optReader.read(2, fake);
+    REQUIRE(s.value() == "asd");
+  }
+
+  SECTION("Only longopt set") {
+    String s = String().longOpt("bar");
+    OptionReader optReader({&s});
+    char* fake[2];
+    fake[0] = (char*)"--bar";
     fake[1] = (char*)"baz";
     optReader.read(2, fake);
     REQUIRE(s.value() == "baz");
   }
 
-  SECTION("Missing superclass (Parameter) members") {
-    Set set = Set().shortOpt('a');
+  SECTION("Skip specifying alternatives for a Set") {
+    Set set = Set().shortOpt('c').longOpt("ccc");
     OptionReader optReader({&set});
     char* fake[2];
     fake[0] = (char*)"-a";

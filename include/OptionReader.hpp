@@ -118,8 +118,7 @@ class OptionReader {
   void handleOpt(const std::string &enteredOpt, const std::string &arg) {
     bool found = false;
     for (Parameter *opt : m_opts) {
-      if (enteredOpt.substr(2, std::string::npos) == opt->longOpt() ||
-          (enteredOpt.length() == 2 && enteredOpt[1] == opt->shortOpt())) {
+      if (opt->matches(enteredOpt)) {
         opt->set(arg);
         found = true;
       }
