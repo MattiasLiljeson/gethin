@@ -27,14 +27,14 @@ int main(int argc, char* argv[]) {
   gethin::String width = gethin::String()
                              .shortOpt('x')
                              .longOpt("width")
-                             .mandatory(true)
+                             .mandatory()
                              .name("width")
                              .help("The width of the drawn shape.");
 
   gethin::String height = gethin::String()
                               .shortOpt('y')
                               .longOpt("height")
-                              .mandatory(true)
+                              .mandatory()
                               .name("height")
                               .help("The height of the shape.");
 
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
   gethin::Set shape = gethin::Set()
                           .shortOpt('s')
                           .longOpt("shape")
-                          .mandatory(true)
+                          .mandatory()
                           .alternatives({"rectangle", "ellipsis"})
                           .help("Which shape to draw.");
 
