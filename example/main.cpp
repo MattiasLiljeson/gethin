@@ -1,22 +1,3 @@
-gethin
-======
-A small (300 sloc) cross-platform header-only c++11 getopt library
-
-[![Build Status](https://travis-ci.org/MattiasLiljeson/gethin.svg?branch=master)](https://travis-ci.org/MattiasLiljeson/gethin)
-[![codecov](https://codecov.io/gh/MattiasLiljeson/gethin/branch/master/graph/badge.svg)](https://codecov.io/gh/MattiasLiljeson/gethin)
-
-Usage
------
-There are three types of options you can use: `String`, `Flag` and `Set`.
-
-1. Create the options you need.
-2. Create a OptionReader object. Supply the options in a vector.
-3. Call the read method on the OptionReader object with argc and argv. 
-4. Call the value method on the options to get the parsed arguments.
-
-Example:
-
-```c++
 #include <iostream>
 #include "gethin.hpp"
 
@@ -63,24 +44,28 @@ int main(int argc, char* argv[]) {
     drawEllipse(std::stoi(width.value()), std::stoi(height.value()));
   }
 }
-```
 
-Example
--------
-An example is included in the example folder.
-It is built with the make target all.
-To build it, just run the command `make`.
-Execute the example by running `./drawshape`. 
+void drawRectangle(int width, int height) {
+  for (int x = 0; x < width; ++x) {
+    for (int y = 0; y < height; ++y) {
+      std::cout << "#";
+    }
+    std::cout << std::endl;
+  }
+}
 
-Tests
------
-The unit tests can be found in `test/`.
-The test framework [Catch2](https://github.com/catchorg/Catch2) is used to write and execute the tests.
-Catch2 is included as a submodule in this repo.
-To be able to build the test, the Catch2 submodule must be present.
-Either clone the repo with the switch `--recurse-submodules`,
-or run the command `git submodule init && git submodule update`.
-The unit tests can be built and executed by running `make test`.
-They document the usage and the (few) caveats of this lib.
-
-As we say in swedish, "Mycket nöje!"
+void drawEllipse(int width, int height) {
+  int h2 = height * height;
+  int w2 = width * width;
+  for (int y = -height; y <= height; y++) {
+    for (int x = -width; x <= width; x++) {
+      if (x * x * h2 + y * y * w2 <= h2 * w2) {
+        std::cout << "#";
+        // setpixel(origin.x + x, origin.y + y);
+      } else {
+        std::cout << " ";
+      }
+    }
+    std::cout << std::endl;
+  }
+}
