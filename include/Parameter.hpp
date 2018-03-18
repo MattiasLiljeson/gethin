@@ -63,7 +63,11 @@ class Parameter_CRTP : public Parameter {
   }
 
   bool longOptMatches(const std::string &enteredOpt) const {
-    return enteredOpt.substr(2, std::string::npos) == m_longOpt.get();
+    if (enteredOpt[0] == '/') {
+      return enteredOpt.substr(1, std::string::npos) == m_longOpt.get();
+    } else {
+      return enteredOpt.substr(2, std::string::npos) == m_longOpt.get();
+    }
   }
 
   bool shortOptMatches(const std::string &enteredOpt) const {

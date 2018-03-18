@@ -7,6 +7,24 @@ A small (300 sloc) cross-platform header-only c++11 getopt library
 
 ![example](usage.gif "usage example")
 
+About
+-----
+Ever being tired of not having a simple cross-platform getopts style lib for your C++ projects?
+I have, so I wrote my own, gethin (and then I found out that other people also have ;-)).
+gethin supports shortopts, longopts and windows-style opts in a quite flexible way.
+Some examples:
+```bash
+app -o argument
+app --option argument
+app /o argument
+app /option argument
+
+app --option=argument
+app --option="argument"
+app --option:argument
+app --option:"argument"
+```
+
 Usage
 -----
 There are three types of options you can use: `String`, `Flag` and `Set`.

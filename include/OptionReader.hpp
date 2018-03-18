@@ -39,7 +39,7 @@ class OptionReader {
     for (size_t i = 0; i < args.size(); ++i) {
       std::string val = args[i];
 
-      size_t p = val.find('=');
+      size_t p = val.find_first_of("=:");
       if (p != std::string::npos) {
         args[i] = val.substr(0, p);
         size_t secondLength = val.size() - p - 1;
@@ -111,9 +111,6 @@ class OptionReader {
                                   e.what());
     }
   }
-  static bool isOption(std::string val) {
-    return val[0] == '/' || val[0] == '-';
-  }
 
   static size_t findNextOptIdx(std::vector<std::string> args,
                                size_t currentIdx) {
@@ -124,6 +121,10 @@ class OptionReader {
       }
     }
     return args.size();
+  }
+
+  static bool isOption(std::string val) {
+    return val[0] == '/' || val[0] == '-';
   }
 
   void handleOpt(const std::string &enteredOpt, const std::string &arg) {

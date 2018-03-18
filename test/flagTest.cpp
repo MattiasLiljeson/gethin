@@ -76,3 +76,20 @@ TEST_CASE("Missing mandatory Flag") {
   }
   REQUIRE(failed == true);
 }
+
+TEST_CASE("Windows style Flag options") {
+  Flag a = Flag().shortOpt('a').longOpt("asd").help("some help text about asd");
+  OptionReader optReader({&a});
+
+  SECTION("Windows style Flag shortopt") {
+    char* fake[]{(char*)"/a"};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(a.value() == true);
+  }
+
+  SECTION("Windows style Flag longopt") {
+    char* fake[]{(char*)"/asd"};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(a.value() == true);
+  }
+}

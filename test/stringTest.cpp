@@ -98,3 +98,21 @@ TEST_CASE("Missing mandatory String") {
   }
   REQUIRE(failed == true);
 }
+
+TEST_CASE("Windows style String options") {
+  String s = String().shortOpt('s').longOpt("scorge").help("help about scorge");
+  String t = String().shortOpt('t').longOpt("tyu").help("help about tyu");
+  OptionReader optReader({&s, &t});
+
+  SECTION("Windows style String shortopt") {
+    char* fake[]{(char*)"/s", (char*)"sdf"};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(s.value() == "sdf");
+  }
+
+  SECTION("Windows style String longopt") {
+    char* fake[]{(char*)"/scorge", (char*)"sdf"};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(s.value() == "sdf");
+  }
+}

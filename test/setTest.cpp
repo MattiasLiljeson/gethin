@@ -99,3 +99,32 @@ TEST_CASE("Missing mandatory Set") {
   }
   REQUIRE(failed == true);
 }
+
+TEST_CASE("Windows style Set options") {
+  Set set = Set().shortOpt('q').longOpt("qwe").alternatives({"a", "b", "c"});
+  OptionReader optReader({&set});
+
+  SECTION("Windows style Set shortopt") {
+    char* fake[]{(char*)"/q", (char*)"a"};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(set.value() == "a");
+  }
+
+  SECTION("Windows style Set longopt with space") {
+    char* fake[]{(char*)"/qwe", (char*)"b"};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(set.value() == "b");
+  }
+
+  SECTION("Windows style Set longopt with =") {
+    char* fake[]{(char*)"/qwe=b", (char*)"/qwe=\"b\""};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(set.value() == "b");
+  }
+
+  SECTION("Windows style Set longopt with :") {
+    char* fake[]{(char*)"/qwe:b", (char*)"/qwe:\"b\""};
+    optReader.read(sizeof(fake) / sizeof(char*), fake);
+    REQUIRE(set.value() == "b");
+  }
+}
