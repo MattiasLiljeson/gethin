@@ -10,9 +10,10 @@
 namespace gethin {
 class OptionReader {
  public:
-  OptionReader() : m_out(std::cout){}
+  OptionReader() : m_out(std::cout) {}
   OptionReader(std::initializer_list<Parameter *> opts,
-  std::ostream& out = std::cout) : m_out(out){
+               std::ostream &out = std::cout)
+      : m_out(out) {
     m_opts = std::vector<Parameter *>(opts);
   }
   OptionReader &with(Parameter *p) {
@@ -28,17 +29,10 @@ class OptionReader {
     std::vector<std::string> args(argv, argv + argc);
     preProcessInput(args);
     processInput(args);
-    for (Parameter *opt : m_opts) {
-      if (opt->isMandatory() && !opt->isSet()) {
-        throw std::invalid_argument(
-            "The mandatory option '--" + opt->longOpt().get() + "' ('-" +
-            opt->shortOpt().get() + "') was not supplied!");
-      }
-    }
   }
 
  private:
-  std::ostream& m_out;
+  std::ostream &m_out;
   std::vector<Parameter *> m_opts;
 
   static void preProcessInput(std::vector<std::string> &args) {
@@ -73,6 +67,17 @@ class OptionReader {
         return;
       } else {
         parseInput(args, i);
+      }
+    }
+    checkMandatoryOptions();
+  }
+
+  void checkMandatoryOptions() {
+    for (Parameter *opt : m_opts) {
+      if (opt->isMandatory() && !opt->isSet()) {
+        throw std::invalid_argument(
+            "The mandatory option '--" + opt->longOpt().get() + "' ('-" +
+            opt->shortOpt().get() + "') was not supplied!");
       }
     }
   }
