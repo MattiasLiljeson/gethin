@@ -98,7 +98,7 @@ TEST_CASE("Test usage output") {
   Flag b = Flag().shortOpt('b').longOpt("bar").help("some help text about bar");
   Flag c = Flag().shortOpt('c').longOpt("corge").help("help text about corge");
   std::ostringstream os;
-  OptionReader optReader({&a, &b, &c}, os);
+  OptionReader optReader({&a, &b, &c}, "das app", os);
   char* fake[1];
   fake[0] = (char*)"-h";
   optReader.read(1, fake);

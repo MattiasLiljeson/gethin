@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
                           .alternatives({"rectangle", "ellipse"})
                           .help("Which shape to draw.");
 
-  gethin::OptionReader optReader({&width, &height, &color, &shape});
+  gethin::OptionReader optReader({&width, &height, &color, &shape}, "drawshape");
   try {
     optReader.read(argc, argv);
   } catch (const std::invalid_argument& e) {
