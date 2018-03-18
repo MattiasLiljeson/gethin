@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
                           .shortOpt('s')
                           .longOpt("shape")
                           .mandatory()
-                          .alternatives({"rectangle", "ellipsis"})
+                          .alternatives({"rectangle", "ellipse"})
                           .help("Which shape to draw.");
 
   gethin::OptionReader optReader({&width, &height, &color, &shape});
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 
   if (shape.value() == "rectangle") {
     drawRectangle(std::stoi(width.value()), std::stoi(height.value()));
-  } else if (shape.value() == "ellipsis") {
+  } else if (shape.value() == "ellipse") {
     drawEllipse(std::stoi(width.value()), std::stoi(height.value()));
   }
 }
