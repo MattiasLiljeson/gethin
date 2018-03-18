@@ -49,21 +49,23 @@ int main(int argc, char* argv[]) {
   }
 }
 
-void drawRectangle(int width, int height) {
-  for (int x = 0; x < width; ++x) {
-    for (int y = 0; y < height; ++y) {
+void drawRectangle(const int width, const int height) {
+  for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
       std::cout << "#";
     }
     std::cout << std::endl;
   }
 }
 
-void drawEllipse(int width, int height) {
-  int h2 = height * height;
-  int w2 = width * width;
-  for (int y = -height; y <= height; y++) {
-    for (int x = -width; x <= width; x++) {
-      if (x * x * h2 + y * y * w2 <= h2 * w2) {
+void drawEllipse(const int width, const int height) {
+  const int wRadius = width/2;
+  const int hRadius = height/2;
+  const int hr2 = hRadius * hRadius;
+  const int wr2 = wRadius * wRadius;
+  for (int y = -hRadius; y <= hRadius; y++) {
+    for (int x = -wRadius; x <= wRadius; x++) {
+      if (x * x * hr2 + y * y * wr2 <= hr2 * wr2) {
         std::cout << "#";
       } else {
         std::cout << " ";
