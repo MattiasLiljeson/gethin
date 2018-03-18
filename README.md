@@ -5,6 +5,8 @@ A small (300 sloc) cross-platform header-only c++11 getopt library
 [![Build Status](https://travis-ci.org/MattiasLiljeson/gethin.svg?branch=master)](https://travis-ci.org/MattiasLiljeson/gethin)
 [![codecov](https://codecov.io/gh/MattiasLiljeson/gethin/branch/master/graph/badge.svg)](https://codecov.io/gh/MattiasLiljeson/gethin)
 
+![example](usage.gif "usage example")
+
 Usage
 -----
 There are three types of options you can use: `String`, `Flag` and `Set`.
