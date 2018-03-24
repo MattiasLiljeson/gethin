@@ -1,4 +1,4 @@
-INCLUDE_DIRS=include test/include Catch2/single_include/
+INCLUDE_DIRS=single_include test/include Catch2/single_include
 INC_PARAMS=$(foreach d, $(INCLUDE_DIRS), -I$d)
 CFLAGS=-c -Wall -std=c++11 $(INC_PARAMS) -fprofile-arcs -ftest-coverage
 LDFLAGS=-lgcov --coverage
@@ -10,6 +10,8 @@ TEST_EXECUTABLE=runtests
 EXAMPLE_SRC=example/drawshape.cpp
 EXAMPLE_OBJECTS=$(EXAMPLE_SRC:.cpp=.o)
 EXAMPLE_EXECUTABLE=drawshape
+
+HEADER_FILES=$(shell find include/ -type f -name '*.hpp')
 
 all: $(TEST_SRC) $(TEST_EXECUTABLE) $(EXAMPLE_SRC) $(EXAMPLE_EXECUTABLE)
 
@@ -34,7 +36,8 @@ clean:
 	find . -name "*.gcno" -print0 | xargs -0 rm -f
 	find . -name "*.o" -print0 | xargs -0 rm -f
 
-HEADER_FILES=$(shell find include/ -type f -name '*.hpp')
+create-single-header:
+	$(MAKE) -C single_include
 
 .PHONY: format
 format:
