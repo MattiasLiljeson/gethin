@@ -1,6 +1,6 @@
 gethin
 ======
-A small (300 sloc) cross-platform header-only c++11 getopt library
+A small (300 sloc) cross-platform header-only c++11 CLI parser library
 
 [![Build Status](https://travis-ci.org/MattiasLiljeson/gethin.svg?branch=master)](https://travis-ci.org/MattiasLiljeson/gethin)
 [![codecov](https://codecov.io/gh/MattiasLiljeson/gethin/branch/master/graph/badge.svg)](https://codecov.io/gh/MattiasLiljeson/gethin)
@@ -9,7 +9,7 @@ A small (300 sloc) cross-platform header-only c++11 getopt library
 
 About
 -----
-Ever being tired of not having a simple cross-platform getopts style lib for your C++ projects?
+Ever being tired of not having a simple cross-platform getopts style CLI parser for your C++ projects?
 I have, so I wrote my own, gethin (and then I found out that other people also have ;-)).
 gethin supports shortopts, longopts and windows-style opts in a quite flexible way.
 Some examples:
