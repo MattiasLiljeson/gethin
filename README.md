@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
 Example
 -------
 An example is included in the example folder.
-It is built with the make target all.
+It is built with the make-target `all`.
 To build it, just run the command `make`.
 Execute the example by running `./drawshape`. 
 
