@@ -1,6 +1,6 @@
 gethin
 ======
-A small (300 sloc) cross-platform header-only c++11 CLI parser library
+A small (400 sloc) cross-platform single-header c++11 CLI parser library
 
 [![Build Status](https://travis-ci.org/MattiasLiljeson/gethin.svg?branch=master)](https://travis-ci.org/MattiasLiljeson/gethin)
 [![codecov](https://codecov.io/gh/MattiasLiljeson/gethin/branch/master/graph/badge.svg)](https://codecov.io/gh/MattiasLiljeson/gethin)
@@ -25,14 +25,19 @@ app --option:argument
 app --option:"argument"
 ```
 
+As this is a single-header library, you only need to include the the gethin.hpp header in the `single_include` folder.
+It is also available with the different classes in separate header files.
+The library in separated header files are available in the `include` folder.
+Using the library this way may decrease compilation times if some gethin classes are included in multiple source files. 
+
 Usage
 -----
-There are three types of options you can use: `String`, `Flag` and `Set`.
+There are three types of options you can parse: `String`, `Flag` and `Set`.
 
 1. Create the options you need.
-2. Create a OptionReader object. Supply the options to the constructor.
-3. Call the read method on the OptionReader object with argc and argv. 
-4. Call the value method on the options to get the parsed arguments.
+2. Create an OptionReader object. Supply the options to the constructor.
+3. Call `read()` on the OptionReader object with argc and argv. 
+4. Call `value()` on the options to get the parsed arguments.
 
 Example:
 
