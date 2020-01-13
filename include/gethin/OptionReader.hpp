@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "Flag.hpp"
 #include "Parameter.hpp"
 
 namespace gethin {
