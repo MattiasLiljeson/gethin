@@ -1,14 +1,29 @@
 language: cpp
-compiler:
-  - gcc
-  - clang
 
-addons:
-    apt:
-        sources:
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
             - ubuntu-toolchain-r-test
-        packages:
+          packages:
+            - g++-7
             - lcov
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7 # For newer stdlib++ with c++17 support
+            - clang-6.0
+            - lcov
+      env:
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
 
 # Use https (public access) instead of git for git-submodules. This modifies only Travis-CI behavior!
 # disable the default submodule logic
@@ -18,6 +33,7 @@ git:
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
+  - eval "${MATRIX_EVAL}"
 
 script:
   - make
