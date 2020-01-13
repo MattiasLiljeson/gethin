@@ -2,7 +2,8 @@
 #include <string>
 #include "ReHelper.hpp"
 #include "catch.hpp"
-#include "gethin.hpp"
+#include "OptionReader.hpp"
+#include "Set.hpp"
 
 using gethin::OptionReader;
 using gethin::Set;

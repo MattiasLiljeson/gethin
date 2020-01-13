@@ -1,6 +1,8 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "gethin.hpp"
+#include "Flag.hpp"
+#include "OptionReader.hpp"
+#include "String.hpp"
 
 using gethin::Flag;
 using gethin::OptionReader;

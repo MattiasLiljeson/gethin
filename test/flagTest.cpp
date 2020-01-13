@@ -2,7 +2,8 @@
 #include <string>
 #include "ReHelper.hpp"
 #include "catch.hpp"
-#include "gethin.hpp"
+#include "Flag.hpp"
+#include "OptionReader.hpp"
 
 using gethin::Flag;
 using gethin::OptionReader;
