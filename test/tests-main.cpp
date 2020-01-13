@@ -40,7 +40,7 @@ TEST_CASE("Test combined shortOpts") {
   }
 
   SECTION("Combined longopts, argument using opts must be last") {
-    char* fake[2];
+    char* fake[5];
     fake[0] = (char*)"--asd";
     fake[1] = (char*)"--bar";
     fake[2] = (char*)"--corge";
