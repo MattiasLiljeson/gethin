@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "Flag.hpp"
 #include "Parameter.hpp"
 
 namespace gethin {
@@ -84,8 +85,8 @@ class OptionReader {
     for (Parameter *opt : m_opts) {
       if (opt->isMandatory() && !opt->isSet()) {
         throw std::invalid_argument(
-            "The mandatory option '--" + opt->longOpt().get() + "' ('-" +
-            opt->shortOpt().get() + "') was not supplied!");
+            "The mandatory option '--" + *(opt->longOpt()) + "' ('-" +
+            *(opt->shortOpt()) + "') was not supplied!");
       }
     }
   }

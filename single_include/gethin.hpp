@@ -3,32 +3,20 @@
 
 #include <algorithm>
 #include <iostream>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <vector>
 
 namespace gethin {
 
-template <typename T>
-class Optional {
- public:
-  Optional() : m_present(false) {}
-  Optional(const T &val) : m_present(true), m_val(val) {}
-  bool isPresent() const { return m_present; }
-  T get() const { return m_val; }
-
- private:
-  bool m_present;
-  T m_val;
-};
-
 class Parameter {
  public:
   virtual ~Parameter(){};
   virtual bool isMandatory() const = 0;
   virtual bool isSet() const = 0;
-  virtual const Optional<char> shortOpt() const = 0;
-  virtual const Optional<std::string> &longOpt() const = 0;
+  virtual const std::optional<char> shortOpt() const = 0;
+  virtual const std::optional<std::string> &longOpt() const = 0;
   virtual bool matches(const std::string &enteredOpt) const = 0;
   virtual void set(const std::string &arg) = 0;
   virtual std::string usage() const = 0;
@@ -48,47 +36,47 @@ class Parameter_CRTP : public Parameter {
 
   bool isSet() const { return m_isSet; }
 
-  const Optional<char> shortOpt() const { return m_shortOpt; }
+  const std::optional<char> shortOpt() const { return m_shortOpt; }
   T &shortOpt(char shortOpt) {
-    m_shortOpt = Optional<char>(shortOpt);
+    m_shortOpt = std::optional<char>(shortOpt);
     return static_cast<T &>(*this);
   }
 
-  const Optional<std::string> &longOpt() const { return m_longOpt; }
+  const std::optional<std::string> &longOpt() const { return m_longOpt; }
   T &longOpt(const std::string &longOpt) {
-    m_longOpt = Optional<std::string>(longOpt);
+    m_longOpt = std::optional<std::string>(longOpt);
     return static_cast<T &>(*this);
   }
 
-  const Optional<std::string> &help() const { return m_help; }
+  const std::optional<std::string> &help() const { return m_help; }
   void formattedHelp(std::ostringstream &os) const {
-    size_t length = m_help.get().size();
+    size_t length = m_help->size();
     for (size_t fromIdx = 0; fromIdx < length; fromIdx += OUT_WIDTH) {
       int toIdx = fromIdx + OUT_WIDTH > length ? length - fromIdx : OUT_WIDTH;
-      os << "\n\t" << m_help.get().substr(fromIdx, toIdx);
+      os << "\n\t" << m_help->substr(fromIdx, toIdx);
     }
   }
   T &help(const std::string &help) {
-    m_help = Optional<std::string>(help);
+    m_help = std::optional<std::string>(help);
     return static_cast<T &>(*this);
   }
 
   bool matches(const std::string &enteredOpt) const {
-    bool longMatches = m_longOpt.isPresent() && longOptMatches(enteredOpt);
-    bool shortMatches = m_shortOpt.isPresent() && shortOptMatches(enteredOpt);
+    bool longMatches = m_longOpt && longOptMatches(enteredOpt);
+    bool shortMatches = m_shortOpt && shortOptMatches(enteredOpt);
     return longMatches || shortMatches;
   }
 
   bool longOptMatches(const std::string &enteredOpt) const {
     if (enteredOpt[0] == '/') {
-      return enteredOpt.substr(1, std::string::npos) == m_longOpt.get();
+      return enteredOpt.substr(1, std::string::npos) == *m_longOpt;
     } else {
-      return enteredOpt.substr(2, std::string::npos) == m_longOpt.get();
+      return enteredOpt.substr(2, std::string::npos) == *m_longOpt;
     }
   }
 
   bool shortOptMatches(const std::string &enteredOpt) const {
-    return enteredOpt.length() == 2 && enteredOpt[1] == m_shortOpt.get();
+    return enteredOpt.length() == 2 && enteredOpt[1] == *m_shortOpt;
   }
 
   virtual void set(const std::string &arg) = 0;
@@ -98,9 +86,9 @@ class Parameter_CRTP : public Parameter {
   const int OUT_WIDTH = 72;
   bool m_mandatory;
   bool m_isSet;
-  Optional<char> m_shortOpt;
-  Optional<std::string> m_longOpt;
-  Optional<std::string> m_help;
+  std::optional<char> m_shortOpt;
+  std::optional<std::string> m_longOpt;
+  std::optional<std::string> m_help;
 };
 
 class Flag : public Parameter_CRTP<Flag> {
@@ -122,7 +110,7 @@ class Flag : public Parameter_CRTP<Flag> {
 
   std::string usage() const override {
     std::ostringstream os;
-    os << "-" << shortOpt().get() << " --" << longOpt().get();
+    os << "-" << *shortOpt() << " --" << *longOpt();
     formattedHelp(os);
     return os.str();
   }
@@ -153,7 +141,7 @@ class Set : public Parameter_CRTP<Set> {
   }
   std::string usage() const override {
     std::ostringstream os;
-    os << "-" << shortOpt().get() << " --" << longOpt().get() << " = {";
+    os << "-" << *shortOpt() << " --" << *longOpt() << " = {";
 
     std::string delimiter = "";
     for (const std::string &item : m_alternatives) {
@@ -209,7 +197,7 @@ class String : public Parameter_CRTP<String> {
   }
   std::string usage() const override {
     std::ostringstream os;
-    os << "-" << shortOpt().get() << " --" << longOpt().get() << " = ";
+    os << "-" << *shortOpt() << " --" << *longOpt() << " = ";
     os << "<" << name() << ">";
     formattedHelp(os);
     return os.str();
@@ -304,8 +292,8 @@ class OptionReader {
     for (Parameter *opt : m_opts) {
       if (opt->isMandatory() && !opt->isSet()) {
         throw std::invalid_argument(
-            "The mandatory option '--" + opt->longOpt().get() + "' ('-" +
-            opt->shortOpt().get() + "') was not supplied!");
+            "The mandatory option '--" + *(opt->longOpt()) + "' ('-" +
+            *(opt->shortOpt()) + "') was not supplied!");
       }
     }
   }

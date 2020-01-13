@@ -21,7 +21,7 @@ class String : public Parameter_CRTP<String> {
   }
   std::string usage() const override {
     std::ostringstream os;
-    os << "-" << shortOpt().get() << " --" << longOpt().get() << " = ";
+    os << "-" << *shortOpt() << " --" << *longOpt() << " = ";
     os << "<" << name() << ">";
     formattedHelp(os);
     return os.str();

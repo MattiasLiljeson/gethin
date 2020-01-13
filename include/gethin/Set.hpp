@@ -30,7 +30,7 @@ class Set : public Parameter_CRTP<Set> {
   }
   std::string usage() const override {
     std::ostringstream os;
-    os << "-" << shortOpt().get() << " --" << longOpt().get() << " = {";
+    os << "-" << *shortOpt() << " --" << *longOpt() << " = {";
 
     std::string delimiter = "";
     for (const std::string &item : m_alternatives) {

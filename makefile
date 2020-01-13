@@ -1,6 +1,6 @@
-INCLUDE_DIRS=single_include test/include Catch2/single_include
+INCLUDE_DIRS=include/gethin single_include test/include Catch2/single_include
 INC_PARAMS=$(foreach d, $(INCLUDE_DIRS), -I$d)
-CFLAGS=-c -Wall -std=c++11 $(INC_PARAMS) -fprofile-arcs -ftest-coverage
+CFLAGS=-c -Wall -std=c++17 $(INC_PARAMS) -fprofile-arcs -ftest-coverage
 LDFLAGS=-lgcov --coverage
 
 TEST_SRC:=$(shell find test -name '*.cpp')
